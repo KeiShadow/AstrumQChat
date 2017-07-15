@@ -5,55 +5,54 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.keiko.astrumqchat.MainActivity">
+    tools:context="com.keiko.astrumqchat.LoginActivity">
 
     <EditText
-        android:id="@+id/email"
+        android:id="@+id/Et_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="175dp"
         android:ems="10"
+        android:hint="email"
         android:inputType="textEmailAddress"
-        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="email" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/Et_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="35dp"
         android:ems="10"
+        android:hint="heslo"
         android:inputType="textPassword"
-        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email"
-        tools:text="heslo" />
+        android:layout_marginTop="23dp"
+        app:layout_constraintTop_toBottomOf="@+id/Et_email" />
 
     <Button
-        android:id="@+id/registration"
+        android:id="@+id/But_Registration"
         android:layout_width="214dp"
         android:layout_height="56dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginTop="407dp"
         android:text="Zaregistrovat se"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="407dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.606"
+        app:layout_constraintHorizontal_bias="0.497" />
 
     <Button
-        android:id="@+id/login"
+        android:id="@+id/But_login"
         android:layout_width="214dp"
         android:layout_height="56dp"
         android:layout_marginLeft="8dp"
@@ -65,7 +64,8 @@
         android:layout_marginTop="312dp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="8dp"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.414"
+        app:layout_constraintHorizontal_bias="0.497" />
 
     <CheckBox
         android:id="@+id/checkBox"
@@ -73,11 +73,9 @@
         android:layout_height="38dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="22dp"
         android:text="přihlásit se trvale"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password"
-        tools:layout_editor_absoluteX="81dp"
-        tools:layout_editor_absoluteY="213dp" />
+        android:layout_marginTop="51dp"
+        app:layout_constraintTop_toBottomOf="@+id/Et_password" />
 </android.support.constraint.ConstraintLayout>
