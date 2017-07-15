@@ -8,7 +8,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 
+import com.google.common.hash.Hashing;
+
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -34,14 +38,15 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+         String hashedpass = Hashing.sha256().hashString(password.getText().toString(), StandardCharsets.UTF_8).toString();
+            Log.i("heslo:",hashedpass);
+                Login login = new Login(email.getText().toString(),hashedpass);
 
+            /*if(email.toString() !=" " && (password.length()>=6 && password.toString()!="")){
 
-             Login login = new Login();
-            if(email.toString() !=" " && (password.length()>=6 && password.toString()!="")){
-                 //Login login = new Login(email.getText().toString(),sha256(password.getText().toString()));
 
                 }
-
+            */
             }
         });
 
@@ -56,21 +61,5 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    public static String sha256(String base) {
-        try{
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(base.getBytes("UTF-8"));
-            StringBuffer hexString = new StringBuffer();
 
-            for (int i = 0; i < hash.length; i++) {
-                String hex = Integer.toHexString(0xff & hash[i]);
-                if(hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-
-            return hexString.toString();
-        } catch(Exception ex){
-            throw new RuntimeException(ex);
-        }
-    }
 }

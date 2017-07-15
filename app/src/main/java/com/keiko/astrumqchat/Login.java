@@ -20,10 +20,12 @@ public class Login {
 
             Client client = ClientBuilder.newClient();
             Entity payload = Entity.json("{  'email': "+email+",  'password': "+password+"}");
-            Response response = client.target("http://production.astrumq.com/entry_test/www/api/").request(MediaType.TEXT_HTML_TYPE).post(payload);
+            Response response = client.target("http://production.astrumq.com/entry_test/www/api/").request(MediaType.APPLICATION_JSON_TYPE).post(payload);
+           Log.i("Status:",String.valueOf(response.getStatus()));
+            response.close();
 
-            System.out.println("status: " + response.getStatus());
-            System.out.println("headers: " + response.getHeaders());
-            System.out.println("body:" + response.readEntity(String.class));
+            //System.out.println("status: " + response.getStatus());
+            //System.out.println("headers: " + response.getHeaders());
+            //System.out.println("body:" + response.readEntity(String.class));
     };
 }
