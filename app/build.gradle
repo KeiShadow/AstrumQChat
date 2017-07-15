@@ -14,18 +14,18 @@ android {
     }
 
 
-        packagingOptions {
-            exclude 'META-INF/NOTICE' // will not include NOTICE file
-            exclude 'META-INF/LICENSE' // will not include LICENSE file
-            // as noted by @Vishnuvathsan you may also need to include
-            // variations on the file name. It depends on your dependencies.
-            // Some other common variations on notice and license file names
-            exclude 'META-INF/notice'
-            exclude 'META-INF/notice.txt'
-            exclude 'META-INF/license'
-            exclude 'META-INF/license.txt'
-            exclude 'META-INF/ASL2.0'
-        }
+    packagingOptions {
+        exclude 'META-INF/NOTICE' // will not include NOTICE file
+        exclude 'META-INF/LICENSE' // will not include LICENSE file
+        // as noted by @Vishnuvathsan you may also need to include
+        // variations on the file name. It depends on your dependencies.
+        // Some other common variations on notice and license file names
+        exclude 'META-INF/notice'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/ASL2.0'
+    }
 
     buildTypes {
         release {
@@ -40,13 +40,15 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
+
+
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'org.glassfish.jersey.core:jersey-client:2.8'
     compile 'org.glassfish.jersey.media:jersey-media-json-jackson:2.8'
-
+    compile 'com.android.support:design:26.+'
     testCompile 'junit:junit:4.12'
-
-
 }
+
 

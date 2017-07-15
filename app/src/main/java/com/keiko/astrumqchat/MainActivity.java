@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -34,7 +34,9 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             //   Login login = new Login();
+
+
+             Login login = new Login();
             if(email.toString() !=" " && (password.length()>=6 && password.toString()!="")){
                  //Login login = new Login(email.getText().toString(),sha256(password.getText().toString()));
 
@@ -47,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         registration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                setContentView(R.layout.registration);
             }
         });
 
