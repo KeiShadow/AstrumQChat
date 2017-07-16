@@ -1,25 +1,14 @@
 package com.keiko.astrumqchat;
 
+import android.os.Message;
 import android.os.StrictMode;
 import android.util.Log;
 
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 
 
-import javax.ws.rs.ClientErrorException;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.MediaType;
-import javax.xml.*;
 
 /**
  * Created by Petr on 16.07.2017.
@@ -27,68 +16,29 @@ import javax.xml.*;
 
 public class Login {
 
-   /* public Login(String email, String password) {
-        HttpURLConnection client = null;
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
-        StrictMode.setThreadPolicy(policy);
-        try{
-            URL url = new URL("https://private-0d820c-aqhr.apiary-mock.com/api/login?email="+email+"&password="+password);
-            client= (HttpURLConnection) url.openConnection();
-            client.setRequestMethod("POST");
-            //client.setRequestProperty("Content-Type", "application/json");
-            //client.setRequestProperty("password",password);
-            client.setDoOutput(true);
-
-            OutputStream stream = new BufferedOutputStream(client.getOutputStream());
-            writeStream(stream);
-            Log.i("Jsem tu bro","good");
-            client.disconnect();
-
-        } catch(SocketTimeoutException e) {
-            //e.getMessage();
-        } catch (IOException e){
-            //e.printStackTrace();
-
-        } catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            if(client != null) // Make sure the connection is not null.
-                client.disconnect();
-        }
-
-
-    }*/
    public Login(String email, String password){
        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
        StrictMode.setThreadPolicy(policy);
+
     try{
+    Client client = Client.create();
+        WebResource wR = client.resource("https://private-0d820c-aqhr.apiary-mock.com/api/login");
+        String input = "{\"email\":\""+email+"\",\"password\":\""+password+"\"}";
+        ClientResponse response = wR.type("application/json").post(ClientResponse.class,input);
 
-        Client client = ClientBuilder.newClient();
+        if(response.getStatus()!=201){
+         throw new RuntimeException("Filed: HTTP error code: "+response.getStatus());
+        }
 
-        Entity payload = Entity.json("{  'email': '"+email+"',  'password': '"+password+"'}");
-        Response response = client.target("https://private-0d820c-aqhr.apiary-mock.com/api/login")
-                .request(MediaType.APPLICATION_JSON_TYPE)
-                .post(payload);
-        Log.i("Status",String.valueOf(response.getStatus()));
-
-    }catch(ClientErrorException e){
+     Log.wtf("Output from server.....\n",String.valueOf(response.getEntity(String.class)));
+    }catch(Exception e){
         e.printStackTrace();
-    }
-    catch (Exception e){
-        e.printStackTrace();
+
     }
 
    }
 
-    private void writeStream(OutputStream stream) throws IOException {
-
-        String output = "Hello world";
-
-        stream.write(output.getBytes());
-        stream.flush();
-    }
 
 }
 
