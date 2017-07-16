@@ -18,12 +18,11 @@ public class Login {
 
    public Login(String email, String password){
        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
        StrictMode.setThreadPolicy(policy);
 
     try{
     Client client = Client.create();
-        WebResource wR = client.resource("https://private-0d820c-aqhr.apiary-mock.com/api/login");
+        WebResource wR = client.resource("https://private-0d820c-aqhr.apiary-mock.com/api/login");//"https://private-0d820c-aqhr.apiary-mock.com/api/login" http://production.astrumq.com/entry_test/www/api/
         String input = "{\"email\":\""+email+"\",\"password\":\""+password+"\"}";
         ClientResponse response = wR.type("application/json").post(ClientResponse.class,input);
 
@@ -34,7 +33,6 @@ public class Login {
      Log.wtf("Output from server.....\n",String.valueOf(response.getEntity(String.class)));
     }catch(Exception e){
         e.printStackTrace();
-
     }
 
    }
