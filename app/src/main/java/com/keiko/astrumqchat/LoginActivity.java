@@ -28,7 +28,12 @@ public class LoginActivity extends AppCompatActivity {
         But_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Login log = new Login(Et_email.getText().toString(),Et_password.getText().toString());
+                User user = new User();
+                Login log = new Login(user,Et_email.getText().toString(),Et_password.getText().toString());
+
+
+                Intent listMessagesActivity = new Intent(LoginActivity.this,ListOfMessagesActivity.class);
+                LoginActivity.this.startActivity(listMessagesActivity);
             }
         });
 
@@ -40,9 +45,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent registerIntent=new Intent(LoginActivity.this,RegistrationActivity.class);
                 LoginActivity.this.startActivity(registerIntent);
-
-
-
             }
         });
 

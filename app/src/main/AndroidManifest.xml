@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegistrationActivity" />
+        <activity android:name=".ListOfMessagesActivity"></activity>
     </application>
 
 </manifest>
