@@ -2,6 +2,7 @@ package com.keiko.astrumqchat;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -15,50 +16,63 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Petr on 16.07.2017.
  */
 
-public class CustomListAdapter extends ArrayAdapter {
+public class CustomListAdapter extends ArrayAdapter{
     //to reference the Activity
-    private final Activity context;
+    private  Activity context;
 
     //to store the animal images
     //private final Integer[] imageIDarray;
 
     //to store the list of countries
-    private final  ArrayList<HashMap<String, String>> titleArray;
+    private  ArrayList<HashMap<String, String>> titleArray;
 
     //to store the list of countries
-    private final  ArrayList<HashMap<String, String>> descriptionArray;
+    private  ArrayList<HashMap<String, String>> descriptionArray;
 
-    private final  ArrayList<HashMap<String, String>> profileArray;
 
-    public CustomListAdapter(Activity context, ArrayList<HashMap<String, String>> titleArray, ArrayList<HashMap<String, String>> descriptionArray, ArrayList<HashMap<String, String>> profileArray){
-        super(context,R.layout.listviewrow,titleArray);
 
+
+    //private final  ArrayList<HashMap<String, String>> profileArray;
+
+
+    public CustomListAdapter(Activity context, ArrayList<HashMap<String, String>> titleArray, ArrayList<HashMap<String, String>> descriptionArray){ // ArrayList<HashMap<String, String>> descriptionArray, ArrayList<HashMap<String, String>> profileArray) {
+        super(context, R.layout.listview_row, titleArray);
         this.context = context;
         this.titleArray = titleArray;
         this.descriptionArray = descriptionArray;
-        this.profileArray = profileArray;
 
+        //this.profileArray = profileArray;
     }
 
 
-    public View GetView(int position, View view, ViewGroup parent){
-        LayoutInflater inflater=context.getLayoutInflater();
-        View rowView=inflater.inflate(R.layout.listviewrow, null,true);
 
-        TextView titleField = (TextView) rowView.findViewById(R.id.Tv_title);
-        TextView descField = (TextView) rowView.findViewById(R.id.Tv_description);
-        TextView profileField = (TextView) rowView.findViewById(R.id.Tv_profile);
+    public View getView(int position, View convertview, ViewGroup parent){
+        View rowView = convertview;
 
+        LayoutInflater inflater= (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        rowView=inflater.inflate(R.layout.listview_row,parent,false);
+
+        //this code gets references to objects in the listview_row.xml file
+        TextView titleField = (TextView) rowView.findViewById(R.id.titleView);
+
+
+        TextView descField = (TextView) rowView.findViewById(R.id.descView);
+        //TextView profileField = (TextView) rowView.findViewById(R.id.Tv_profile);
         //ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
 
-        titleField.setText((CharSequence) titleArray.get(position));
-        descField.setText((CharSequence) descriptionArray.get(position));
-        profileField.setText((CharSequence) profileArray.get(position));
+        //this code sets the values of the objects to values from the arrays
+        titleField.setText((CharSequence) titleArray.get(position).get("title"));
+        descField.setText((CharSequence) descriptionArray.get(position).get("description"));
+
+        //profileField.setText((CharSequence) profileArray.get(position).get("id"));
 
         //imageView.setImageResource(imageIDarray[position]);
 
