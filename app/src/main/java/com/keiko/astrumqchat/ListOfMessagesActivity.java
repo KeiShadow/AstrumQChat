@@ -5,6 +5,7 @@ import android.database.DataSetObserver;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -31,7 +32,10 @@ public class ListOfMessagesActivity extends AppCompatActivity{
     private ArrayList<HashMap<String, String>> profilefield;
     private ArrayList<HashMap<String, String>> titleField;
     private ArrayList<HashMap<String, String>> descField;
+
     private ListView simpleList;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,7 @@ public class ListOfMessagesActivity extends AppCompatActivity{
         private String urlMsg = "Https://private-0d820c-aqhr.apiary-mock.com/api/messages";
         private ProgressDialog pDialog;
         private ListView simpleList;
+        private UserProfile userProfile;
 
         @Override
    protected void onPreExecute() {
@@ -63,27 +68,23 @@ public class ListOfMessagesActivity extends AppCompatActivity{
 
         @Override
         protected Void doInBackground(Void... voids) {
+            String messages;
+
             try {
-                ClientResponse response;
-                WebResource wR;
-                Client client = Client.create();
-                wR = client.resource("https://private-0d820c-aqhr.apiary-mock.com/api/messages");
-                response = wR.accept("application/json").header("Authorization", "aXiousbndekasldnnlasrlnb").get(ClientResponse.class);
-                if (response.getStatus() != 200) {
-                    throw new RuntimeException("Failed : HTTP error code : "
-                            + response.getStatus());
+                Connection connection = new Connection();
+                UserProfile userProfile = new UserProfile();
+                messages =connection.Get(urlMsg,userProfile.getToken(userProfile),"application/json");
+                Log.i("TOKEN",);
 
-                }
-                String output;
                 //V output jsou json zpravy
-                output = response.getEntity(String.class);
-                JSONObject jsonObject = new JSONObject(output);
-                JSONArray jsonArray = jsonObject.getJSONArray("messages");
 
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject cid = jsonArray.getJSONObject(i);
-                    JSONObject ctitle = jsonArray.getJSONObject(i);
-                    JSONObject cdesc = jsonArray.getJSONObject(i);
+                JSONObject jsonObject = new JSONObject(messages);
+                JSONArray jsonArrayMsg = jsonObject.getJSONArray("messages");
+
+                for (int i = 0; i < jsonArrayMsg.length(); i++) {
+                    JSONObject cid = jsonArrayMsg.getJSONObject(i);
+                    JSONObject ctitle = jsonArrayMsg.getJSONObject(i);
+                    JSONObject cdesc = jsonArrayMsg.getJSONObject(i);
 
                     String id = cid.getString("id");
                     String tittle = ctitle.getString("title");
