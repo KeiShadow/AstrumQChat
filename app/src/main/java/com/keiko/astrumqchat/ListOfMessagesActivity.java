@@ -23,7 +23,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class ListOfMessagesActivity extends AppCompatActivity{
@@ -45,11 +47,10 @@ public class ListOfMessagesActivity extends AppCompatActivity{
         profilefield = new ArrayList<>();
         titleField = new ArrayList<>();
         descField = new ArrayList<>();
-
         new Messages().execute();
     }
 
-    public class Messages extends AsyncTask<Void,Void,Void> {
+    public class Messages extends AsyncTask<Void,Void,Void> implements Serializable {
         //  ProgressDialog asyncDialog = new ProgressDialog();
         private String urlMsg = "Https://private-0d820c-aqhr.apiary-mock.com/api/messages";
         private ProgressDialog pDialog;
@@ -72,9 +73,13 @@ public class ListOfMessagesActivity extends AppCompatActivity{
 
             try {
                 Connection connection = new Connection();
-                UserProfile userProfile = new UserProfile();
-                messages =connection.Get(urlMsg,userProfile.getToken(userProfile),"application/json");
-                Log.i("TOKEN",);
+
+                Bundle extra = getIntent().getBundleExtra("extra");
+
+                ArrayList<UserProfile> user = (ArrayList<UserProfile>) extra.getSerializable("User");
+
+                Log.i("USER",user.get(0).getEmail());
+                messages =connection.Get(urlMsg, user.get(0).token,"application/json");
 
                 //V output jsou json zpravy
 
@@ -82,12 +87,57 @@ public class ListOfMessagesActivity extends AppCompatActivity{
                 JSONArray jsonArrayMsg = jsonObject.getJSONArray("messages");
 
                 for (int i = 0; i < jsonArrayMsg.length(); i++) {
-                    JSONObject cid = jsonArrayMsg.getJSONObject(i);
-                    JSONObject ctitle = jsonArrayMsg.getJSONObject(i);
-                    JSONObject cdesc = jsonArrayMsg.getJSONObject(i);
+                    HashMap<String, String> profile = new HashMap<>();
+                    JSONObject message = jsonArrayMsg.getJSONObject(i);
 
-                    String id = cid.getString("id");
+                    JSONObject author = message.getJSONObject("author");
+
+                    String idauth= author.getString("id");
+
+                    if(idauth.contentEquals(user.get(0).getID())){
+                        String email = user.get(0).getEmail();
+                        profile.put("email",email);
+
+                        String title = message.getString("title");
+                        String description = message.getString("description");
+
+                        profile.put("title",title);
+                        profile.put("description",description);
+
+                    }else{
+                        String name = author.getString("name");
+                        String surname = author.getString("surname");
+                        String email = author.getString("email");
+                        profile.put("name",name);
+                        profile.put("surname",surname);
+                        profile.put("email",email);
+                        String title = message.getString("title");
+                        String description = message.getString("description");
+                        profile.put("title",title);
+                        profile.put("description",description);
+                    }
+                        /*Naplim pole userem*/
+                    /*message node*/
+
+
+
+                        //Hash mapa pro kazdeho uzivatele
+
+
+
+
+                    profilefield.add(profile);
+
+
+                    /*JSONObject ci = jsonArrayMsg.getJSONObject(i);
+                    String id = ci.getString("id");
+
+
+                    JSONObject ctitle = jsonArrayMsg.getJSONObject(i);
                     String tittle = ctitle.getString("title");
+
+
+                    JSONObject cdesc = jsonArrayMsg.getJSONObject(i);
                     String description = cdesc.getString("description");
 
                     HashMap<String, String> profile = new HashMap<>();
@@ -101,7 +151,7 @@ public class ListOfMessagesActivity extends AppCompatActivity{
                     profilefield.add(profile);
                     titleField.add(title);
                     descField.add(desc);
-
+                    */
                 }
 
 
@@ -123,7 +173,7 @@ public class ListOfMessagesActivity extends AppCompatActivity{
              * */
 
             //CustomListAdapter whatever = new CustomListAdapter(ListOfMessagesActivity.this, titleField,descField);
-          ListAdapter whatever = new CustomListAdapter(ListOfMessagesActivity.this,titleField,descField);
+          ListAdapter whatever = new CustomListAdapter(ListOfMessagesActivity.this,profilefield);
             simpleList = (ListView) findViewById(R.id.listViewID);
             simpleList.setAdapter(whatever);
 

@@ -1,16 +1,13 @@
 package com.keiko.astrumqchat;
 
-import android.widget.ArrayAdapter;
-
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
 
 /**
  * Created by Petr on 16.07.2017.
  */
 
-public class UserProfile {
+public class UserProfile implements Serializable {
 
     public String nick;
     public String name;
@@ -18,37 +15,62 @@ public class UserProfile {
     public String email;
     public String password;
     public String token;
-    public String ID;
+    public String id;
 
-    public ArrayList<UserProfile> userProfiles = new ArrayList<UserProfile>();
+    public void setNick(String nick){
+        this.nick = nick;
 
-    public void addUser (String email,String password, String token, String ID){
-        UserProfile loginProfile = new UserProfile();
-        loginProfile.email = email;
-        loginProfile.password = password;
-        loginProfile.token = token;
-        loginProfile.ID = ID;
-        userProfiles.add(loginProfile);
     }
-    public void addUserReg(String nick, String name, String surname, String email, String password, String token, String ID){
-        UserProfile newProfile = new UserProfile();
-        newProfile.name=name;
-        newProfile.nick=nick;
-        newProfile.surname = surname;
-        newProfile.email = email;
-        newProfile.password=password;
-        newProfile.token = token;
-        newProfile.ID = ID;
+    public  String getNick(){
+        return  nick;
 
-        userProfiles.add(newProfile);
     }
+    public void setName(String name){
+        this.name = name;
 
+    }
+    public  String getName(){
+        return  name;
 
-    public String getToken(UserProfile user){
-        for(int i=0;i<userProfiles.size();i++){
-            return userProfiles.get(i).token;
-        }
-        return "";
+    }
+    public void setSurname(String surname){
+        this.surname = surname;
+    }
+    public String getSurname(){
+        return surname;
     }
 
+    public void setEmail(String email){
+        this.email = email ;
+    }
+
+    public String getEmail(){
+        return email ;
+    }
+    public void setPassWord(String password){
+        this.password = password ;
+    }
+    public String getPassword(){
+        return password ;
+    }
+    public void setToken(String token){
+        this.token = token;
+    }
+    public String getToken(){
+        return token;
+    }
+
+    public void setID(String id){this.id = id;}
+    public String getID(){return id;}
+
+    public UserProfile(UserProfile user){
+        this.nick = user.getNick();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.token = user.getToken();
+    }
+
+    public UserProfile(){
+
+    }
 }
