@@ -4,13 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
-
-import com.google.common.hash.Hashing;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,13 +20,13 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         final Button But_login;
         final Button But_reg;
-        final String urlLogin = "https://private-0d820c-aqhr.apiary-mock.com/api/login";//"https://private-0d820c-aqhr.apiary-mock.com/api/login" http://production.astrumq.com/entry_test/www/api/
+        final String urlLogin ="http://production.astrumq.com/entry_test/www/api/login";//"https://private-0d820c-aqhr.apiary-mock.com/api/login";
         final String output;
 
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // String hashedpass = Hashing.sha256().hashString(password.getText().toString(), StandardCharsets.UTF_8).toString();
+
 
         /*Prihlaseni*/
         But_login = (Button)findViewById(R.id.But_login);
@@ -39,41 +37,51 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                 StrictMode.setThreadPolicy(policy);
-                String input = "{\"email\":\"" + Et_email.getText().toString() + "\",\"password\":\"" + Et_password.getText().toString() + "\"}";
-                try {
-                    Connection cnt = new Connection();
-                    String output= cnt.Post(urlLogin,input,"application/json");
+                String email = Et_email.getText().toString().trim();
+                String password = Et_password.getText().toString().trim();
 
-                    String token, id;
+                if(email != null && password.length()>6 ){
+                    String input = "{\"email\":\"" + Et_email.getText().toString() + "\",\"password\":\"" + Et_password.getText().toString() + "\"}";
+                    try {
+                        Connection cnt = new Connection();
+                        String output= cnt.Post(urlLogin,input,"application/json");
 
-                    Intent listMessagesActivity = new Intent(LoginActivity.this,ListOfMessagesActivity.class);
-                    JSONObject object = new JSONObject(output);
-                    id = object.getString("id");
-                    JSONObject obj = new JSONObject(output);
-                    token = obj.getString("token");
+                        String token, id;
 
-                    ArrayList<UserProfile> user = new ArrayList<UserProfile>();
-                    UserProfile userProfile = new UserProfile();
-                    userProfile.setEmail(Et_email.getText().toString());
-                    userProfile.setPassWord(Et_password.getText().toString());
-                    userProfile.setToken(token);
-                    userProfile.setID(id);
+                        Intent listMessagesActivity = new Intent(LoginActivity.this,Chat.class);
+                        JSONObject object = new JSONObject(output);
+                        id = object.getString("id");
+                        JSONObject obj = new JSONObject(output);
+                        token = obj.getString("token");
 
-                    user.add(userProfile);
+                        ArrayList<UserProfile> user = new ArrayList<UserProfile>();
+                        UserProfile userProfile = new UserProfile();
+                        userProfile.setEmail(Et_email.getText().toString());
+                        userProfile.setPassWord(Et_password.getText().toString());
+                        userProfile.setToken(token);
+                        userProfile.setID(id);
 
-                    Bundle extra = new Bundle();
+                        user.add(userProfile);
 
-                    extra.putSerializable("User",user);
+                        Bundle extra = new Bundle();
 
-                    listMessagesActivity.putExtra("extra",extra);
+                        extra.putSerializable("User",user);
 
-                    LoginActivity.this.startActivity(listMessagesActivity);
+                        listMessagesActivity.putExtra("extra",extra);
+
+                        LoginActivity.this.startActivity(listMessagesActivity);
 
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }catch (Exception e){
-                    e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                }else {
+                    Toast toast= Toast.makeText(getApplicationContext(),"Chyba, špatně zadané heslo nebo email, heslo musí být více než 6 znaků dlouhé",Toast.LENGTH_LONG);
+                    toast.show();
+
                 }
 
             }

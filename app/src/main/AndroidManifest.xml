@@ -16,14 +16,34 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".LoginActivity">
+
+
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegistrationActivity" />
-        <activity android:name=".ListOfMessagesActivity"></activity>
+
+
+        <activity
+            android:name=".RegistrationActivity"
+            android:label="@string/Registrace"
+            android:parentActivityName=".LoginActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".LoginActivity" />
+        </activity>
+
+        <!-- Parent activity meta-data to support 4.0 and lower -->
+
+        <activity android:name=".Chat" android:launchMode="singleTask" />
+        <activity android:name=".AuthorDetail"
+            android:taskAffinity="com.example.SecondTask"
+            android:parentActivityName=".Chat">
+
+        </activity>
     </application>
 
 </manifest>
