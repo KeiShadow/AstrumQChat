@@ -110,8 +110,6 @@ public class Chat extends AppCompatActivity{
             }
         });
 
-
-
         // Updating parsed JSON data into ListView
         chatList.setAdapter(whatever);
         chatList.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
@@ -159,7 +157,7 @@ public class Chat extends AppCompatActivity{
     }
 
 
-
+ /*Metoda ve které parsujeme json hodnotu*/
     public void parse( ArrayList<HashMap<String, String>> user,ArrayList<UserProfile> usertoken, String messages){
         try{
             JSONObject jsonObject = new JSONObject(messages);
@@ -222,7 +220,7 @@ public class Chat extends AppCompatActivity{
         }
 
     }
-
+    /*Metoda ve které parsujeme json hodnotu*/
     public void parseMsg( ArrayList<HashMap<String, String>> user,ArrayList<UserProfile> usertoken, String output){
         try{
             HashMap<String, String> send = new HashMap<>();
@@ -271,7 +269,7 @@ public class Chat extends AppCompatActivity{
             e.printStackTrace();
         }
     }
-
+    /*Metoda pro nastavení uživatele, pomocí putExtra naplňujeme Intent a tyto hodnoty poté dáváme další aktivitě*/
     public void setProfile(int position,Intent Chat){
 
         String email = msgandprofile.get(position).get("email");

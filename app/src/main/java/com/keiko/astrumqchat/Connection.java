@@ -49,6 +49,7 @@ public class Connection {
             }
             return "";
         }
+        /*Metoda pro odeslání zprávy na server*/
         public String PostMessage(String url, String input, String token, String type){
             try{
                 client = Client.create();

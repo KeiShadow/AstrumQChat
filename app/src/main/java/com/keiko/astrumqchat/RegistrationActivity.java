@@ -48,7 +48,10 @@ public class RegistrationActivity extends AppCompatActivity {
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                 StrictMode.setThreadPolicy(policy);
                 try {
-                    if (Et_email.getText().toString() != null && Et_pass.getText().length() > 5) {
+                    if ((!Et_email.getText().toString().contentEquals("")
+                            && Et_pass.getText().length() > 5) && ( !Et_nick.getText().toString().contentEquals("")
+                            || !Et_name.getText().toString().contentEquals("")
+                            || !Et_surname.getText().toString().contentEquals(""))) {
                         String hashedpass = Hashing.sha256().hashString(Et_pass.getText().toString(), StandardCharsets.UTF_8).toString();
 
                         Connection connection = new Connection();
@@ -66,14 +69,14 @@ public class RegistrationActivity extends AppCompatActivity {
                             Toast toast = Toast.makeText(getApplicationContext(),"Email neni validní",Toast.LENGTH_SHORT);
                             toast.show();
                         }
-
+                        /*Parsujeme output objekt typu JSON, v tomto objektu jsou informace o registrovaném uživateli jako například ID a token*/
                         Intent listMessagesActivity = new Intent(RegistrationActivity.this, Chat.class);
                         JSONObject object = new JSONObject(output);
                         id = object.getString("id");
                         JSONObject obj = new JSONObject(output);
                         token = obj.getString("token");
 
-
+                        /*Naplníme pole uživatelem*/
                         ArrayList<UserProfile> user = new ArrayList<UserProfile>();
                         UserProfile userProfile = new UserProfile();
                         userProfile.setNick(Et_nick.getText().toString());
@@ -96,7 +99,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
                         RegistrationActivity.this.startActivity(listMessagesActivity);
                         }else{
-                        Toast toast = Toast.makeText(getApplicationContext(),"Zadejte email nebo heslo, heslo musi mít více než 6 znaků",Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(getApplicationContext(),"Vyplňte všechny údaje, heslo musi mít více než 6 znaků",Toast.LENGTH_SHORT);
                         toast.show();
                     }
                     }catch(JSONException e){

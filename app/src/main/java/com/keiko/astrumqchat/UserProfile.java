@@ -16,15 +16,15 @@ import java.util.Locale;
 
 public class UserProfile implements Serializable {
 
-    public String nick;
-    public String name;
-    public String surname;
-    public String email;
-    public String password;
-    public String token;
-    public String id;
-    public String date;
-    public String idM;
+    private String nick;
+    private String name;
+    private String surname;
+    private String email;
+    private String password;
+    private String token;
+    private String id;
+    private String date;
+    private String idM;
 
     public void setNick(String nick){
         this.nick = nick;

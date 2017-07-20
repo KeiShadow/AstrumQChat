@@ -56,11 +56,12 @@ public class LoginActivity extends AppCompatActivity {
                         String token, id;
 
                         Intent listMessagesActivity = new Intent(LoginActivity.this,Chat.class);
+                        /*Parsujeme output objekt typu JSON, v tomto objektu jsou informace o přihlašeném uživateli jako například ID a token*/
                         JSONObject object = new JSONObject(output);
                         id = object.getString("id");
                         JSONObject obj = new JSONObject(output);
                         token = obj.getString("token");
-
+                        /*Naplníme pole uživatele tokenem, idečkem, emailem, heslem*/
                         ArrayList<UserProfile> user = new ArrayList<UserProfile>();
                         UserProfile userProfile = new UserProfile();
                         userProfile.setEmail(Et_email.getText().toString());
@@ -69,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                         userProfile.setID(id);
 
                         user.add(userProfile);
-
+                        /*Uživatele musím předat pomocí putextra jako balíček jiné třídě*/
                         Bundle extra = new Bundle();
 
                         extra.putSerializable("User",user);
