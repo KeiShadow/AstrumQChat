@@ -32,9 +32,15 @@ public class Connection {
                 client = Client.create();
                 wR = client.resource(url);
                 response =wR.type(type).post(ClientResponse.class,input);
-                if(response.getStatus() ==401){
-                    throw new RuntimeException("Filed: HTTP error code: "+response.getStatus());
-                }else if(response.getStatus()==201){
+                 if(response.getStatus() ==400){
+                     return String.valueOf(response.getStatus());
+                }else if(response.getStatus() ==401){
+                     return String.valueOf(response.getStatus());
+                 }
+                else if(response.getStatus() ==422){
+                    return String.valueOf(response.getStatus());
+                }
+                else if(response.getStatus()==201){
                     String output = response.getEntity(String.class);
                     return output;
                 }
@@ -48,9 +54,10 @@ public class Connection {
                 client = Client.create();
                 wR = client.resource(url);
                 response =wR.type(type).header("Authorization",token).post(ClientResponse.class,input);
-                if(response.getStatus() ==401){
-                    throw new RuntimeException("Filed: HTTP error code: "+response.getStatus());
-                }else if(response.getStatus()==201){
+                if(response.getStatus() ==422) {
+                    return String.valueOf(response.getStatus());
+                }
+                else if(response.getStatus()==201){
                     String output = response.getEntity(String.class);
                     return output;
                 }

@@ -40,11 +40,18 @@ public class LoginActivity extends AppCompatActivity {
                 String email = Et_email.getText().toString().trim();
                 String password = Et_password.getText().toString().trim();
 
-                if(email != null && password.length()>6 ){
+                if(email != null && password.length()>5 ){
                     String input = "{\"email\":\"" + Et_email.getText().toString() + "\",\"password\":\"" + Et_password.getText().toString() + "\"}";
                     try {
                         Connection cnt = new Connection();
                         String output= cnt.Post(urlLogin,input,"application/json");
+                        if(output.contentEquals("401")) {
+                            Toast toast = Toast.makeText(getApplicationContext(),"Uživatel neexistuje",Toast.LENGTH_SHORT);
+                            toast.show();
+                        }else if(output.contentEquals("422")){
+                            Toast toast = Toast.makeText(getApplicationContext(),"Email neni validní",Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
 
                         String token, id;
 
@@ -79,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                 }else {
-                    Toast toast= Toast.makeText(getApplicationContext(),"Chyba, špatně zadané heslo nebo email, heslo musí být více než 6 znaků dlouhé",Toast.LENGTH_LONG);
+                    Toast toast= Toast.makeText(getApplicationContext(),"Chyba, špatně zadané heslo nebo email, heslo musí být větší než 6 znaků dlouhé",Toast.LENGTH_LONG);
                     toast.show();
 
                 }

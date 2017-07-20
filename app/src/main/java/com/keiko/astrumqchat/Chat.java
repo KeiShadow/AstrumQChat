@@ -3,12 +3,16 @@ package com.keiko.astrumqchat;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -38,6 +42,7 @@ public class Chat extends AppCompatActivity{
     private ArrayList<HashMap<String, String>> sendedmessage;
     private ArrayList<UserProfile> user;
 
+    private MenuItem menu;
 
     private ListView chatList;
     private EditText Et_EditMessage;
@@ -59,16 +64,20 @@ public class Chat extends AppCompatActivity{
         Toolbar my_toolbar = (Toolbar) findViewById(R.id.listToolbar);
         setSupportActionBar(my_toolbar);
 
+
         ActionBar ab =getSupportActionBar();
+
+
+
+
 
         msgandprofile = new ArrayList<>();
         sendedmessage = new ArrayList<>();
 
         Et_EditMessage = (EditText)findViewById(R.id.messageEditText);
 
-        /*Vytvoreni pripojeni*/
+         /*Vytvoreni pripojeni*/
         Connection cnt = new Connection();
-
         /*Nacteni uzivatele z prihlaseni kvuli tokenu*/
         Bundle extra = getIntent().getBundleExtra("extra");
         user = (ArrayList<UserProfile>) extra.getSerializable("User");
@@ -79,9 +88,9 @@ public class Chat extends AppCompatActivity{
         parse(msgandprofile,user,messages);
 
         ButtonSendMessage = (ImageButton) findViewById(R.id.sendMessageButton);
-        final CustomListAdapter whatever = new CustomListAdapter(Chat.this,msgandprofile);
+        final CustomListAdapter whatever = new CustomListAdapter(Chat.this,msgandprofile,user);
         chatList = (ListView) findViewById(R.id.listViewID);
-
+        /*Posilani zprav*/
         ButtonSendMessage.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -94,6 +103,8 @@ public class Chat extends AppCompatActivity{
                     parseMsg(sendedmessage,user,output);
                     whatever.add(sendedmessage.get(0));
                     whatever.notifyDataSetChanged();
+                    sendedmessage.clear();
+                    Et_EditMessage.getText().clear();
                 }
 
             }
@@ -120,6 +131,33 @@ public class Chat extends AppCompatActivity{
 
 
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+                // User chose the "Settings" item, show the app settings UI...
+                Intent logout = new Intent(Chat.this, LoginActivity.class);
+                user.clear();
+                msgandprofile.clear();
+                this.startActivity(logout);
+                this.finish();
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
 
 
     public void parse( ArrayList<HashMap<String, String>> user,ArrayList<UserProfile> usertoken, String messages){
@@ -174,15 +212,9 @@ public class Chat extends AppCompatActivity{
 
                     DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                     profile.put("dateCreated", String.valueOf(format.parse(Datecreated)));
-
                 }
-
                 msgandprofile.add(profile);
-
             }
-
-
-
         }catch (JSONException e){
             e.printStackTrace();
         } catch (ParseException e) {
@@ -207,19 +239,31 @@ public class Chat extends AppCompatActivity{
                 Date today = new Date();
                 String Datecreated = today.toString();
                 JSONObject profile = jsonObject.getJSONObject("message").getJSONObject("author");
+
                 String id = profile.getString("id");
-                 String email = profile.getString("email");
-
-
-
-
-                send.put("title", title);
-                send.put("description", description);
-                send.put("dateCreated", Datecreated);
-                send.put("email",email);
-                send.put("id",id);
-
-
+                if(id.contentEquals(usertoken.get(0).getID())){
+                    String email = profile.getString("email");
+                    String name = profile.getString("name");
+                    String surname=profile.getString("surname");
+                    send.put("name",name);
+                    send.put("surname",surname);
+                    send.put("title", title);
+                    send.put("description", description);
+                    send.put("dateCreated", Datecreated);
+                    send.put("email",email);
+                    send.put("id",id);
+                }else{
+                    String email = profile.getString("email");
+                    String name = profile.getString("name");
+                    String surname=profile.getString("surname");
+                    send.put("name",name);
+                    send.put("surname",surname);
+                    send.put("title", title);
+                    send.put("description", description);
+                    send.put("dateCreated", Datecreated);
+                    send.put("email",email);
+                    send.put("id",id);
+                }
                 sendedmessage.add(send);
 
 
@@ -261,16 +305,6 @@ public class Chat extends AppCompatActivity{
 
 
 
-
-    }
-
-    public void sendMessage(ArrayList<HashMap<String, String>> user,ArrayList<UserProfile> userProfile){
-        String message = Et_EditMessage.getText().toString();
-        if(!message.equalsIgnoreCase("")){
-            Connection cnt = new Connection();
-            String input = "{\"title\":\"New Message\",\"description\":\"" + message + "\"}";
-            String output=cnt.PostMessage(urlMsg,input,userProfile.get(0).getToken(),type);
-        }
 
     }
 }

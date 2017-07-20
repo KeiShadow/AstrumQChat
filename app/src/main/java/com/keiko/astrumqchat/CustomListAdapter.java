@@ -21,11 +21,13 @@ import java.util.HashMap;
  */
 
 public class CustomListAdapter extends ArrayAdapter {
+    private ArrayList<UserProfile> user;
     private static class ViewHolder {
         TextView titleField;
         TextView descField;
         TextView emailField;
         TextView date;
+
 
         ImageView info;
     }
@@ -38,10 +40,11 @@ public class CustomListAdapter extends ArrayAdapter {
     private final  ArrayList<HashMap<String, String>> profileArray;
 
 
-    public CustomListAdapter(Activity context, ArrayList<HashMap<String, String>> profileArray) { // ArrayList<HashMap<String, String>> descriptionArray, ArrayList<HashMap<String, String>> profileArray) {
+    public CustomListAdapter(Activity context, ArrayList<HashMap<String, String>> profileArray, ArrayList<UserProfile> user) { // ArrayList<HashMap<String, String>> descriptionArray, ArrayList<HashMap<String, String>> profileArray) {
         super(context, R.layout.chat_row, profileArray);
         this.context = context;
         this.profileArray = profileArray;
+        this.user = user;
     }
 
     public View getView(int position, View convertview, ViewGroup parent) {
@@ -69,7 +72,7 @@ public class CustomListAdapter extends ArrayAdapter {
         ImageView imageSender = (ImageView) rowView.findViewById(R.id.VI_senderImage);
         LinearLayout senderLayout = (LinearLayout) rowView.findViewById(R.id.SenderLayout);
 
-        if(profileArray.get(position).get("id").contentEquals("1")){
+        if(profileArray.get(position).get("id").contentEquals(user.get(0).getID())){
             titleSender.setText((CharSequence) profileArray.get(position).get("title"));
             descSender.setText((CharSequence) profileArray.get(position).get("description"));
 
@@ -118,11 +121,6 @@ public class CustomListAdapter extends ArrayAdapter {
 
         return rowView;
 
-    }
-
-
-    public void refreshList(){
-        this.notifyDataSetChanged();
     }
 
 }
